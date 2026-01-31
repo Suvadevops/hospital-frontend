@@ -16,4 +16,3 @@ jobs:
           distribution: temurin
       - name: Build and analyze
         run: mvn clean verify sonar:sonar -Dsonar.login=${{ secrets.SONAR_TOKEN }}
-
