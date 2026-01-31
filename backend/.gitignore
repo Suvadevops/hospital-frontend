@@ -1,0 +1,12 @@
+# in backend project root
+@"
+/target/
+/.idea/
+/*.iml
+*.log
+.env
+/.settings
+EOF
+"@ > .gitignore
+
+echo "# Hospital Backend" > README.md
