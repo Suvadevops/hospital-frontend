@@ -1,5 +1,5 @@
 // Update this with your backend URL
-const API_BASE_URL = process.env.REACT_APP_API_URL || "http://192.168.1.4:8080";
+const API_BASE_URL = process.env.REACT_APP_API_URL || "https://hospital-backend-h25z.onrender.com/patients";
 
 export const addPatient = async (patientData) => {
   try {
