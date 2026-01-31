@@ -1,5 +1,7 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
-
+# IntelliJ
+.idea/
+*.iml
 # dependencies
 /node_modules
 /.pnp
@@ -21,3 +23,14 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+# Backend
+backend/target
+backend/.idea
+backend/*.iml
+
+
+
+# Secrets
+.env
+application.properties
+application.yml
