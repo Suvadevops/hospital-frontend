@@ -134,4 +134,4 @@ function AddPatient() {
   );
 }
 
-export default AddPatient;
+export default AddPatient; //for PR process
