@@ -1,5 +1,5 @@
 // Update this with your backend URL
-const API_BASE_URL = process.env.REACT_APP_API_URL || "https://hospital-backend-h25z.onrender.com/patients";
+const API_BASE_URL = process.env.REACT_APP_API_URL || "https://hospital-backend-olti.onrender.com";
 
 export const addPatient = async (patientData) => {
   try {
