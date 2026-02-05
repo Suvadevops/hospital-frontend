@@ -1,8 +1,14 @@
-# Getting Started with Create React App
+## 🚀 Live Demo
+Frontend URL: https://hospitalmanagementsystem-suva.vercel.app
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## 🛠 Tech Stack
+- React
+- JavaScript
+- HTML, CSS
+- REST API
 
-## Available Scripts
+## 📸 Screenshots
+<img width="952" height="467" alt="home" src="https://github.com/user-attachments/assets/235f1ca8-567f-4cbe-9e57-a63bbd2d7261" />
 
 In the project directory, you can run:
 
