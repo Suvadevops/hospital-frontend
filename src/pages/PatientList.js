@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-
+import './styles/main.css';
 function PatientList() {
   const [patients, setPatients] = useState([]);
 
