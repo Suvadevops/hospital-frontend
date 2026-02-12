@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import AddPatient from "./pages/AddPatient";
+import './styles/main.css';
 
 function PatientList() {
   const [patients, setPatients] = useState([]);
