@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { addPatient, getPatient, updatePatient } from "../services/api";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 function AddPatient() {
   const navigate = useNavigate();
@@ -22,62 +22,17 @@ function AddPatient() {
     setPatient({ ...patient, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     setLoading(true);
     setError("");
 
-    try {
-      if (isEdit) {
-        await updatePatient(id, patient);
-        alert("✅ Patient updated successfully!");
-      } else {
-        await addPatient(patient);
-        alert("✅ Patient added successfully!");
-      }
-      setPatient({
-        name: "",
-        age: "",
-        doctor: "",
-        appointmentDate: ""
-      });
-      navigate("/");
-    } catch (err) {
-      setError(err.message || "Failed to add patient");
-      alert("❌ " + (err.message || "Failed to add patient"));
-    } finally {
-      setLoading(false);
-    }
-  };
+    // TEMP – backend illa, console la kaatum
+    console.log("Patient Added:", patient);
 
-  useEffect(() => {
-    let mounted = true;
-    if (isEdit) {
-      (async () => {
-        try {
-          const data = await getPatient(id);
-          if (!mounted) return;
-          let appt = "";
-          if (data.appointmentDate) {
-            try {
-              appt = new Date(data.appointmentDate).toISOString().slice(0, 10);
-            } catch (e) {
-              appt = data.appointmentDate;
-            }
-          }
-          setPatient({
-            name: data.name || "",
-            age: data.age || "",
-            doctor: data.doctor || "",
-            appointmentDate: appt
-          });
-        } catch (err) {
-          setError(err.message || "Failed to load patient");
-        }
-      })();
-    }
-    return () => (mounted = false);
-  }, [id, isEdit]);
+    alert("✅ Patient added successfully!");
+    navigate("/");
+  };
 
   return (
     <div className="container">
