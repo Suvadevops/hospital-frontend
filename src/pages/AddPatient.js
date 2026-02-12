@@ -1,9 +1,10 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 function AddPatient() {
   const navigate = useNavigate();
+  const { id } = useParams();
+  const isEdit = Boolean(id);
 
   const [patient, setPatient] = useState({
     name: "",
@@ -12,9 +13,6 @@ function AddPatient() {
     appointmentDate: ""
   });
 
-  const { id } = useParams();
-  const isEdit = Boolean(id);
-
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -22,21 +20,41 @@ function AddPatient() {
     setPatient({ ...patient, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError("");
 
-    // TEMP – backend illa, console la kaatum
-    console.log("Patient Added:", patient);
+    try {
+      const response = await fetch(
+        "https://hospital-backend-olti.onrender.com/patients",  // 🔥 Replace this
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(patient)
+        }
+      );
 
-    alert("✅ Patient added successfully!");
-    navigate("/");
+      if (!response.ok) {
+        throw new Error("Failed to save patient");
+      }
+
+      alert("✅ Patient added successfully!");
+      navigate("/");
+
+    } catch (err) {
+      console.error(err);
+      setError("❌ Error saving patient. Check backend connection.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <div className="container">
-      <h1>Add Patient</h1>
+      <h1>{isEdit ? "Update Patient" : "Add Patient"}</h1>
 
       <div className="card">
         <form onSubmit={handleSubmit}>
@@ -78,15 +96,19 @@ function AddPatient() {
 
           <div style={{ textAlign: "center", marginTop: "20px" }}>
             <button type="submit" disabled={loading}>
-              {loading ? (isEdit ? "Updating..." : "Saving...") : isEdit ? "Update Patient" : "Save Patient"}
+              {loading ? "Saving..." : "Save Patient"}
             </button>
           </div>
-          {error && <p style={{ color: "red", marginTop: "10px" }}>{error}</p>}
 
+          {error && (
+            <p style={{ color: "red", marginTop: "10px" }}>
+              {error}
+            </p>
+          )}
         </form>
       </div>
     </div>
   );
 }
 
-export default AddPatient; //for PR process
+export default AddPatient;
