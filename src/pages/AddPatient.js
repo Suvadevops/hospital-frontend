@@ -1,9 +1,12 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { addPatient, getPatient, updatePatient } from "../services/api";
+
+const API_URL = "https://hospital-backend-olti.onrender.com/patients";
 
 function AddPatient() {
   const navigate = useNavigate();
+  const { id } = useParams();
+  const isEdit = Boolean(id);
 
   const [patient, setPatient] = useState({
     name: "",
@@ -12,80 +15,69 @@ function AddPatient() {
     appointmentDate: ""
   });
 
-  const { id } = useParams();
-  const isEdit = Boolean(id);
-
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+  const [popup, setPopup] = useState({ show: false, message: "" });
+
+  useEffect(() => {
+    if (isEdit) fetchPatient();
+  }, [id]);
+
+  const fetchPatient = async () => {
+    try {
+      const res = await fetch(`${API_URL}/${id}`);
+      const data = await res.json();
+      setPatient(data);
+    } catch (err) {
+      showPopup("❌ Failed to load patient");
+      console.error(err);
+    }
+  };
 
   const handleChange = (e) => {
     setPatient({ ...patient, [e.target.name]: e.target.value });
   };
 
+  const showPopup = (message) => {
+    setPopup({ show: true, message });
+    setTimeout(() => setPopup({ show: false, message: "" }), 2000);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setError("");
-
     try {
       if (isEdit) {
-        await updatePatient(id, patient);
-        alert("✅ Patient updated successfully!");
+        // UPDATE
+        await fetch(`${API_URL}/${id}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(patient),
+        });
+        showPopup("✅ Patient updated!");
       } else {
-        await addPatient(patient);
-        alert("✅ Patient added successfully!");
+        // ADD
+        await fetch(API_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(patient),
+        });
+        showPopup("✅ Patient added!");
       }
-      setPatient({
-        name: "",
-        age: "",
-        doctor: "",
-        appointmentDate: ""
-      });
-      navigate("/");
+      setTimeout(() => navigate("/"), 1200); // Navigate after popup
     } catch (err) {
-      setError(err.message || "Failed to add patient");
-      alert("❌ " + (err.message || "Failed to add patient"));
+      showPopup("❌ Operation failed");
+      console.error(err);
     } finally {
       setLoading(false);
     }
   };
 
-  useEffect(() => {
-    let mounted = true;
-    if (isEdit) {
-      (async () => {
-        try {
-          const data = await getPatient(id);
-          if (!mounted) return;
-          let appt = "";
-          if (data.appointmentDate) {
-            try {
-              appt = new Date(data.appointmentDate).toISOString().slice(0, 10);
-            } catch (e) {
-              appt = data.appointmentDate;
-            }
-          }
-          setPatient({
-            name: data.name || "",
-            age: data.age || "",
-            doctor: data.doctor || "",
-            appointmentDate: appt
-          });
-        } catch (err) {
-          setError(err.message || "Failed to load patient");
-        }
-      })();
-    }
-    return () => (mounted = false);
-  }, [id, isEdit]);
-
   return (
     <div className="container">
-      <h1>Add Patient</h1>
+      <h2 style={{ textAlign: "center" }}>{isEdit ? "Edit Patient" : "Add Patient"}</h2>
 
-      <div className="card">
+      <div className="card" style={{ maxWidth: "600px", margin: "10px auto" }}>
         <form onSubmit={handleSubmit}>
-          
           <input
             type="text"
             name="name"
@@ -94,7 +86,6 @@ function AddPatient() {
             onChange={handleChange}
             value={patient.name}
           />
-
           <input
             type="number"
             name="age"
@@ -103,7 +94,6 @@ function AddPatient() {
             onChange={handleChange}
             value={patient.age}
           />
-
           <input
             type="text"
             name="doctor"
@@ -112,7 +102,6 @@ function AddPatient() {
             onChange={handleChange}
             value={patient.doctor}
           />
-
           <input
             type="date"
             name="appointmentDate"
@@ -123,15 +112,16 @@ function AddPatient() {
 
           <div style={{ textAlign: "center", marginTop: "20px" }}>
             <button type="submit" disabled={loading}>
-              {loading ? (isEdit ? "Updating..." : "Saving...") : isEdit ? "Update Patient" : "Save Patient"}
+              {loading ? (isEdit ? "Updating..." : "Saving...") : (isEdit ? "Update Patient" : "Save Patient")}
             </button>
           </div>
-          {error && <p style={{ color: "red", marginTop: "10px" }}>{error}</p>}
-
         </form>
       </div>
+
+      {/* Centered popup */}
+      {popup.show && <div className="popup">{popup.message}</div>}
     </div>
   );
 }
 
-export default AddPatient; //for PR process
+export default AddPatient;
