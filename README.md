@@ -33,7 +33,14 @@ This project helps manage patients, doctors, appointments, and overall hospital 
 - ☁️ Microsoft Azure  
 
 ---
+## SonarCloud & CI
 
+- SonarCloud analysis executed via GitHub Actions
+- Quality Gate: PASSED
+- Docker image build: SUCCESS
+<img width="1906" height="750" alt="Screenshot 2026-03-20 002453" src="https://github.com/user-attachments/assets/82b3f227-c5eb-4a4a-923f-9e9f33978bc4" />
+
+---
 ## Deployment on Vercel 
 <img width="952" height="467" alt="home" src="https://github.com/user-attachments/assets/235f1ca8-567f-4cbe-9e57-a63bbd2d7261" />
 
