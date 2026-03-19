@@ -125,3 +125,4 @@ function AddPatient() {
 }
 
 export default AddPatient;
+// sonarcloud
