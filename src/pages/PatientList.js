@@ -54,6 +54,13 @@ function PatientList() {
     <div className="container">
       <h2 style={{ textAlign: "center" }}>Patient List</h2>
 
+      {/* 🔥 NEW: Patient Count Button */}
+      <div style={{ textAlign: "center", marginTop: "10px" }}>
+        <button className="btn edit">
+          Total Patients: {patients.length}
+        </button>
+      </div>
+
       <div style={{ textAlign: "center", margin: "20px 0" }}>
         <Link to="/add">
           <button className="btn edit">Add Patient</button>
@@ -90,7 +97,7 @@ function PatientList() {
         </table>
       </div>
 
-      {/* Centered Popup Modal */}
+      {/* Popup */}
       {popup.show && (
         <div className="popup-container">
           <div className={`popup ${popup.type}`}>
