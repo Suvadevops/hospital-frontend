@@ -1,13 +1,11 @@
 import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import './styles/main.css';
 
 function PatientList() {
   const [patients, setPatients] = useState([]);
   const [popup, setPopup] = useState({ show: false, message: "", type: "" });
   const [deleteTarget, setDeleteTarget] = useState(null);
-
-  const navigate = useNavigate();
 
   useEffect(() => {
     fetchPatients();
@@ -18,6 +16,7 @@ function PatientList() {
       const response = await fetch("https://hospital-backend-olti.onrender.com/patients");
       const data = await response.json();
       setPatients(data);
+      console.log("Patients:", data); // debug
     } catch (error) {
       console.error("Error fetching patients:", error);
     }
@@ -53,18 +52,17 @@ function PatientList() {
     <div className="container">
       <h2 style={{ textAlign: "center" }}>Patient List</h2>
 
-      {/* Add Patient Button */}
+      {/* 🔥 BOTH BUTTONS TOGETHER */}
       <div style={{ textAlign: "center", margin: "20px 0" }}>
         <Link to="/add">
           <button className="btn edit">Add Patient</button>
         </Link>
-      </div>
 
-      {/* 🔥 NEW FEATURE: Total Patient Count */}
-      <div style={{ textAlign: "center", marginBottom: "20px" }}>
-        <button className="btn edit">
-          Total Patients: {patients.length} 👨‍⚕️
-        </button>
+        <div style={{ marginTop: "15px" }}>
+          <button className="btn edit">
+            Total Patients: {patients.length} 👨‍⚕️
+          </button>
+        </div>
       </div>
 
       <div className="table-wrap">

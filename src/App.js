@@ -69,10 +69,18 @@ function PatientList() {
     <div className="container">
       <h2 style={{ textAlign: "center", margin: "20px 0" }}>Patient List</h2>
 
+      {/* 🔥 BUTTON SECTION */}
       <div style={{ textAlign: "center", marginBottom: "20px" }}>
         <Link to="/add">
           <button className="btn edit">Add Patient</button>
         </Link>
+
+        {/* ✅ NEW FEATURE */}
+        <div style={{ marginTop: "15px" }}>
+          <button className="btn edit">
+            Total Patients: {patients.length} 👨‍⚕️
+          </button>
+        </div>
       </div>
 
       <div className="table-wrap">
