@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import AddPatient from "./pages/AddPatient";
 import './styles/main.css';
 
 function PatientList() {
@@ -26,7 +25,7 @@ function PatientList() {
 
   const showPopup = (message, type = "success") => {
     setPopup({ show: true, message, type });
-    if(type !== "confirm") {
+    if (type !== "confirm") {
       setTimeout(() => setPopup({ show: false, message: "", type: "" }), 2500);
     }
   };
@@ -54,17 +53,18 @@ function PatientList() {
     <div className="container">
       <h2 style={{ textAlign: "center" }}>Patient List</h2>
 
-      {/* 🔥 NEW: Patient Count Button */}
-      <div style={{ textAlign: "center", marginTop: "10px" }}>
-        <button className="btn edit">
-          Total Patients: {patients.length}
-        </button>
-      </div>
-
+      {/* Add Patient Button */}
       <div style={{ textAlign: "center", margin: "20px 0" }}>
         <Link to="/add">
           <button className="btn edit">Add Patient</button>
         </Link>
+      </div>
+
+      {/* 🔥 NEW FEATURE: Total Patient Count */}
+      <div style={{ textAlign: "center", marginBottom: "20px" }}>
+        <button className="btn edit">
+          Total Patients: {patients.length} 👨‍⚕️
+        </button>
       </div>
 
       <div className="table-wrap">
@@ -89,7 +89,9 @@ function PatientList() {
                   <Link to={`/edit/${p.id}`}>
                     <button className="btn edit">Update Patient</button>
                   </Link>
-                  <button className="btn delete" onClick={() => confirmDelete(p.id)}>Delete</button>
+                  <button className="btn delete" onClick={() => confirmDelete(p.id)}>
+                    Delete
+                  </button>
                 </td>
               </tr>
             ))}
@@ -105,7 +107,12 @@ function PatientList() {
             {popup.type === "confirm" && (
               <div className="popup-actions">
                 <button className="btn edit" onClick={handleDelete}>Yes</button>
-                <button className="btn delete" onClick={() => setPopup({ show: false, message: "", type: "" })}>No</button>
+                <button
+                  className="btn delete"
+                  onClick={() => setPopup({ show: false, message: "", type: "" })}
+                >
+                  No
+                </button>
               </div>
             )}
           </div>
